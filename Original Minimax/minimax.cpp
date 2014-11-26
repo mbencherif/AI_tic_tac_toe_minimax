@@ -23,8 +23,8 @@ struct movenode
 int dfsmax(pnode from);
 int n;
 char role; //computer plays role;
-int nextmove[2];
-pnode current;
+int nextmove[2]; //next move of the computer
+pnode current; //current state (root of move tree)
 
 int chkend()//check if game end
 {
@@ -73,7 +73,7 @@ int chkend()//check if game end
 	return 0;
 } //return 2--X win; 1--O win; 0--DRAW; -1--Not end
 
-int dfsmin(pnode from)
+int dfsmin(pnode from) //min
 {
 	int min,i,j,g,k;
 	pnode p1,p2;
@@ -98,12 +98,12 @@ int dfsmin(pnode from)
 			}
 			min=(g<min)?g:min;
 			p1->u=g;
-			board.p[i][j]='-';
+			board.p[i][j]='-'; //reset
 		}
 	}
 	return min;
 }
-int dfsmax(pnode from)
+int dfsmax(pnode from) //max
 {
 	int max,i,j,g,k;
 	max=-999; //-infinity
@@ -133,21 +133,21 @@ int dfsmax(pnode from)
 	}
 	return max;
 }
-void freemovenode(pnode move)
+void freemovenode(pnode move) //free move tree
 {
 	if(move==NULL) return;
 	freemovenode(move->fchild);
 	freemovenode(move->nsibl);
 	free(move);
 }
-void outputsibl(pnode p1, int modifymove,char gamer)
+void outputsibl(pnode p1, int modifymove,char gamer) //output brothers
 {
 	if(p1==NULL) return;
 	cout<<"MOVE: "<<gamer<<"("<<p1->m[0]<<","<<p1->m[1]<<") Utility="<<p1->u<<endl;
 	if(modifymove==p1->u) {nextmove[0]=p1->m[0];nextmove[1]=p1->m[1];}
 	outputsibl(p1->nsibl,modifymove,gamer);
 }
-void outputtree(pnode current, int modifymove,int minmax)
+void outputtree(pnode current, int modifymove,int minmax) //output the move tree (minimax tree)
 {
 	pnode p1;
 	p1=current->fchild;
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	fclose(ifp);
-	while(chkend()==-1) {
+	while(chkend()==-1) { //if game not end
 	current=(pnode)malloc(sizeof(struct movenode));
 	current->fchild=NULL;
 	current->nsibl=NULL;

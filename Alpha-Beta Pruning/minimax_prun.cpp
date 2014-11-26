@@ -24,7 +24,7 @@ int dfsmax(pnode from,int minn, int maxx); //search for node in the range (minn,
 int n;
 char role; //computer plays role;
 int nextmove[2];
-pnode current;
+pnode current; //current move(the root of the move tree)
 
 int chkend()//check if game end
 {
@@ -73,9 +73,9 @@ int chkend()//check if game end
 	return 0;
 } //return 2--X win; 1--O win; 0--DRAW; -1--Not end
 
-int dfsmin(pnode from,int minn,int maxx)
+int dfsmin(pnode from,int minn,int maxx)//mini
 {
-	int min,i,j,g,k;
+	int min,max,i,j,g,k;
 	pnode p1,p2;
 	min=999; //infinity
 	max=maxx;
@@ -90,7 +90,7 @@ int dfsmin(pnode from,int minn,int maxx)
 			p1->m[0]=i; p1->m[1]=j;
 			if(from->fchild==NULL) from->fchild=p1; else p2->nsibl=p1;
 			p2=p1;
-			if(chkend()<0) g=dfsmax(p2,min,max);
+			if(chkend()<0) g=dfsmax(p2,minn,max);
 			else {
 				k=chkend(); g=k;
 				if(k==2 && role=='O') g=-1;
@@ -101,14 +101,14 @@ int dfsmin(pnode from,int minn,int maxx)
 			p1->u=g;
 			max=(max>min)?min:max;
 			board.p[i][j]='-';
-			if(min<=minn) return min;
+			if(min<=minn) return -999; //prun
 		}
 	}
 	return min;
 }
-int dfsmax(pnode from,int minn, int maxx)
+int dfsmax(pnode from,int minn, int maxx) //max
 {
-	int max,i,j,g,k;
+	int min,max,i,j,g,k;
 	max=-999;//infinity
 	min=minn;
 	pnode p1,p2;
@@ -123,7 +123,7 @@ int dfsmax(pnode from,int minn, int maxx)
 			p1->m[0]=i; p1->m[1]=j;
 			if(from->fchild==NULL) from->fchild=p1; else p2->nsibl=p1;
 			p2=p1;
-			if(chkend()<0) g=dfsmin(p2,min,max);
+			if(chkend()<0) g=dfsmin(p2,min,maxx);
 			else {
 				k=chkend(); g=k;
 				if(k==2 && role=='O') g=-1;
@@ -134,40 +134,40 @@ int dfsmax(pnode from,int minn, int maxx)
 			p1->u=g;
 			min=(min<max)?max:min;
 			board.p[i][j]='-';
-			if(max>=maxx) return max;
+			if(max>=maxx) return 999; //prun
 		}
 	}
 	return max;
 }
-void freemovenode(pnode move)
+void freemovenode(pnode move) //free node
 {
 	if(move==NULL) return;
 	freemovenode(move->fchild);
 	freemovenode(move->nsibl);
 	free(move);
 }
-void outputsibl(pnode p1, int modifymove,char gamer)
+void outputsibl(pnode p1, int modifymove,char gamer) //output brother
 {
 	if(p1==NULL) return;
-	cout<<"MOVE: "<<gamer<<"("<<p1->m[0]<<","<<p1->m[1]<<") Utility="<<p1->u<<endl;
+	cout<<"MOVE: "<<gamer<<"("<<p1->m[0]+1<<","<<p1->m[1]+1<<") Utility="<<p1->u<<endl;
 	if(modifymove==p1->u) {nextmove[0]=p1->m[0];nextmove[1]=p1->m[1];}
 	outputsibl(p1->nsibl,modifymove,gamer);
 }
-void outputtree(pnode current, int modifymove,int minmax)
+void outputtree(pnode current, int modifymove,int minmax) //output the game tree (move tree)
 {
 	pnode p1;
 	p1=current->fchild;
 	if(p1==NULL) return;
 	if(minmax) {cout<<"MAX["<<role<<"]  Branch of node [movement: (";
 	printf("%c",'X'+'O'-role);
-	cout<<")("<<current->m[0]<<","<<current->m[1]<<")]"<<endl;
+	cout<<")("<<current->m[0]+1<<","<<current->m[1]+1<<")]"<<endl;
 	}
 	else {
 		cout<<"MIN[";
 		printf("%c",'X'+'O'-role);
-		cout<<"]  Branch of node [movement: ("<<role<<")("<<current->m[0]<<","<<current->m[1]<<")]"<<endl;
+		cout<<"]  Branch of node [movement: ("<<role<<")("<<current->m[0]+1<<","<<current->m[1]+1<<")]"<<endl;
 	}
-	outputsibl(p1,(modifymove)?current->u:-999,(minmax)?role:'O'+'X'-role);
+	outputsibl(p1,(modifymove)?current->u:-9999,(minmax)?role:'O'+'X'-role);
 	cout<<"**********************************"<<endl;
 	while(p1) {outputtree(p1,0,1-minmax);p1=p1->nsibl;}
 }
@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	fclose(ifp);
-	while(chkend()==-1) {
+	while(chkend()==-1) { //if game not finish
 	current=(pnode)malloc(sizeof(struct movenode));
 	current->fchild=NULL;
 	current->nsibl=NULL;

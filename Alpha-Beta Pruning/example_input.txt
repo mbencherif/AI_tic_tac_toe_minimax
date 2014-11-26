@@ -1,6 +1,6 @@
-SIZE: 4  
+SIZE: 3  
 PLAYER: X 
--X--
--O-O
----X
-----
+-X-
+-OX
+-X-
+

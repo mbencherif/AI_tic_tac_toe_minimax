@@ -20,7 +20,7 @@ struct movenode
 	int m[2];
 	int u; //utility
 };
-int dfsmax(pnode from);
+int dfsmax(pnode from,int minn, int maxx); //search for node in the range (minn,maxx)
 int n;
 char role; //computer plays role;
 int nextmove[2];
@@ -73,11 +73,12 @@ int chkend()//check if game end
 	return 0;
 } //return 2--X win; 1--O win; 0--DRAW; -1--Not end
 
-int dfsmin(pnode from)
+int dfsmin(pnode from,int minn,int maxx)
 {
 	int min,i,j,g,k;
 	pnode p1,p2;
 	min=999; //infinity
+	max=maxx;
 	p2=NULL;
 	for(i=0;i<n;i++) for(j=0;j<n;j++)
 	{
@@ -89,7 +90,7 @@ int dfsmin(pnode from)
 			p1->m[0]=i; p1->m[1]=j;
 			if(from->fchild==NULL) from->fchild=p1; else p2->nsibl=p1;
 			p2=p1;
-			if(chkend()<0) g=dfsmax(p2);
+			if(chkend()<0) g=dfsmax(p2,min,max);
 			else {
 				k=chkend(); g=k;
 				if(k==2 && role=='O') g=-1;
@@ -98,15 +99,18 @@ int dfsmin(pnode from)
 			}
 			min=(g<min)?g:min;
 			p1->u=g;
+			max=(max>min)?min:max;
 			board.p[i][j]='-';
+			if(min<=minn) return min;
 		}
 	}
 	return min;
 }
-int dfsmax(pnode from)
+int dfsmax(pnode from,int minn, int maxx)
 {
 	int max,i,j,g,k;
-	max=-999; //-infinity
+	max=-999;//infinity
+	min=minn;
 	pnode p1,p2;
 	p2=NULL;
 	for(i=0;i<n;i++) for(j=0;j<n;j++)
@@ -119,7 +123,7 @@ int dfsmax(pnode from)
 			p1->m[0]=i; p1->m[1]=j;
 			if(from->fchild==NULL) from->fchild=p1; else p2->nsibl=p1;
 			p2=p1;
-			if(chkend()<0) g=dfsmin(p2);
+			if(chkend()<0) g=dfsmin(p2,min,max);
 			else {
 				k=chkend(); g=k;
 				if(k==2 && role=='O') g=-1;
@@ -128,7 +132,9 @@ int dfsmax(pnode from)
 			}
 			max=(g>max)?g:max;
 			p1->u=g;
+			min=(min<max)?max:min;
 			board.p[i][j]='-';
+			if(max>=maxx) return max;
 		}
 	}
 	return max;
@@ -200,7 +206,7 @@ int main(int argc, char *argv[])
 		cout<<endl;
 	}
 	cout<<endl;
-	k=dfsmax(current);
+	k=dfsmax(current,-999,999);
 	current->u=k;
 	cout<<"MiniMax Tree:"<<endl;
 	outputtree(current,1,1);

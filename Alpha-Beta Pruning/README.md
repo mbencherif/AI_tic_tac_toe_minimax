@@ -1,5 +1,5 @@
 #TIC-TAC-TOE MINIMAX Alpha-Beta  
-The minimax is a executable file under Linux.  
+The minimax_prun is a executable file under Linux.  
 If you want to compile yourself, use the following command:  
 **g++ minimax_prun.cpp -o minimax_prun**  
   

@@ -143,7 +143,7 @@ void freemovenode(pnode move) //free move tree
 void outputsibl(pnode p1, int modifymove,char gamer) //output brothers
 {
 	if(p1==NULL) return;
-	cout<<"MOVE: "<<gamer<<"("<<p1->m[0]<<","<<p1->m[1]<<") Utility="<<p1->u<<endl;
+	cout<<"MOVE: "<<gamer<<"("<<p1->m[0]+1<<","<<p1->m[1]+1<<") Utility="<<p1->u<<endl;
 	if(modifymove==p1->u) {nextmove[0]=p1->m[0];nextmove[1]=p1->m[1];}
 	outputsibl(p1->nsibl,modifymove,gamer);
 }
@@ -154,12 +154,12 @@ void outputtree(pnode current, int modifymove,int minmax) //output the move tree
 	if(p1==NULL) return;
 	if(minmax) {cout<<"MAX["<<role<<"]  Branch of node [movement: (";
 	printf("%c",'X'+'O'-role);
-	cout<<")("<<current->m[0]<<","<<current->m[1]<<")]"<<endl;
+	cout<<")("<<current->m[0]+1<<","<<current->m[1]+1<<")]"<<endl;
 	}
 	else {
 		cout<<"MIN[";
 		printf("%c",'X'+'O'-role);
-		cout<<"]  Branch of node [movement: ("<<role<<")("<<current->m[0]<<","<<current->m[1]<<")]"<<endl;
+		cout<<"]  Branch of node [movement: ("<<role<<")("<<current->m[0]+1<<","<<current->m[1]+1<<")]"<<endl;
 	}
 	outputsibl(p1,(modifymove)?current->u:-999,(minmax)?role:'O'+'X'-role);
 	cout<<"**********************************"<<endl;

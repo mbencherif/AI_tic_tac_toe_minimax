@@ -1,4 +1,7 @@
 #TIC-TAC-TOE MINIMAX  
+==========================
+[![Build Status](https://travis-ci.org/zeruniverse/AI_tic_tac_toe_minimax.svg?branch=master)](https://travis-ci.org/zeruniverse/AI_tic_tac_toe_minimax)  
+
 This is an assignment for the course Artifitial Intelligence Survey.  
   
 For original implementation (without pruning), please see the folder Original Minimax.  

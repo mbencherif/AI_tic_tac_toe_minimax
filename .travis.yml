@@ -3,6 +3,5 @@ compiler:
   - clang
   - gcc
 script: 
-  - scons
   - g++ Original\ Minimax/minimax.cpp -o minimax
   - g++ Alpha-Beta\ Pruning/minimax_prun.cpp -o minimax_prun

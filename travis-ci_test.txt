@@ -1,0 +1,6 @@
+SIZE: 4  
+PLAYER: X 
+XXO-
+XOXO
+OXOX
+OXXO

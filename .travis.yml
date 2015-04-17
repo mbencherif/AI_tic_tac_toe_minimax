@@ -4,7 +4,7 @@ compiler:
 script: 
   - g++ Original\ Minimax/minimax.cpp -o minimax
   - g++ Alpha-Beta\ Pruning/minimax_prun.cpp -o minimax_prun
-  - ./minimax Original\ Minimax/example_input.txt
-  - ./minimax Original\ Minimax/example_input1.txt
-  - ./minimax_prun Alpha-Beta\ Pruning/example_input.txt
-  - ./minimax_prun Alpha-Beta\ Pruning/example_input1.txt
+  - ./minimax travis-ci_test.txt
+  - ./minimax travis-ci_test.txt
+  - ./minimax_prun travis-ci_test.txt
+  - ./minimax_prun travis-ci_test.txt

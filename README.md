@@ -11,4 +11,6 @@ For Alpha-Beta Pruning optimization, please see the folder Alpha-Beta Pruning.
 
 **Branch of XXX in the minimax tree of the output of my program means this node is the leaf of XXX node**  
   
-&copy;Jeffery Zhao
+&copy;Jeffery Zhao  
+  
+LISENCE: GNU GPL 3.0

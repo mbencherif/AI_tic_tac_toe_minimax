@@ -14,3 +14,5 @@ For Alpha-Beta Pruning optimization, please see the folder Alpha-Beta Pruning.
 &copy;Jeffery Zhao  
   
 LISENCE: GNU GPL 3.0
+  
+**You must give appropriate credit (link to this repo) if you use (part of) this project. Appropriate copyright info is also required by GNU GPL 3.0**
